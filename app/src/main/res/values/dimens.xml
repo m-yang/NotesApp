@@ -4,4 +4,5 @@
     <dimen name="card_btn_padding_bottom">8dp</dimen>
     <dimen name="card_width">175dp</dimen>
     <dimen name="card_height">200dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

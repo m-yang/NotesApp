@@ -1,9 +1,13 @@
 package com.example.android.notesapp.view;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.example.android.notesapp.R;
 import com.example.android.notesapp.model.Note;
@@ -16,8 +20,14 @@ import butterknife.ButterKnife;
 
 public class NoteListActivity extends AppCompatActivity implements NoteListView, NoteListAdapter.ButtonActionListener {
 
+
+    private String TAG = NoteListActivity.class.getSimpleName();
+
     @BindView(R.id.noteslist_rv)
-    private RecyclerView mNoteList;
+    public RecyclerView mNoteList;
+
+    @BindView(R.id.add_note_fab)
+    public FloatingActionButton mAddNoteFab;
 
     private NoteListPresenter mPresenter;
 
@@ -36,6 +46,18 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         mPresenter = new NoteListPresenter();
         mPresenter.attachView(this);
 
+        mAddNoteFab.setOnClickListener(addNote());
+
+    }
+
+    private View.OnClickListener addNote() {
+
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "add button clicked");
+            }
+        };
     }
 
     @Override
