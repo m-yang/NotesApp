@@ -8,5 +8,6 @@ public interface NoteListView {
 
     void showNotes();
     void setupNotesList(List<Note> notes);
+    void startAddNoteActivity();
 
 }

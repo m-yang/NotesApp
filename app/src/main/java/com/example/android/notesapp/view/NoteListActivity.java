@@ -1,5 +1,6 @@
 package com.example.android.notesapp.view;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,7 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startAddNoteActivity();
                 Log.d(TAG, "add button clicked");
             }
         };
@@ -79,10 +81,15 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     }
 
     @Override
+    public void startAddNoteActivity() {
+        Intent intent = new Intent(this, AddNoteActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void showNotes() {
 
     }
-
 
     /* button listener implementation */
     @Override
