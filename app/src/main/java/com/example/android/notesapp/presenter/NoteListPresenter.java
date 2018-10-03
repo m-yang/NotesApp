@@ -1,7 +1,10 @@
 package com.example.android.notesapp.presenter;
 
+import com.example.android.notesapp.model.DummyNoteData;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.view.NoteListView;
+
+import java.util.List;
 
 public class NoteListPresenter implements Presenter<NoteListView> {
 
@@ -20,12 +23,8 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     }
 
     public void loadNotes() {
-
-        // query firebase
-
-        // create adapter
-
-        // update view
+        List<Note> notes = DummyNoteData.getNotes();
+        mView.showNotes(notes);
     }
 
     public void deleteNote() {

@@ -1,10 +1,9 @@
 package com.example.android.notesapp.view;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,6 +47,14 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
         mAddNoteFab.setOnClickListener(addNote());
 
+        // setup recycler view
+        GridLayoutManager layoutManager = new GridLayoutManager(this, NUM_COLUMNS);
+        mNoteList.setLayoutManager(layoutManager);
+
+        NoteListAdapter adapter = new NoteListAdapter(this);
+        mNoteList.setAdapter(adapter);
+
+        mPresenter.loadNotes();
     }
 
     @Override
@@ -69,26 +76,16 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
     /* view interface implementation */
     @Override
-    public void setupNotesList(List<Note> notes) {
-        // set layout
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mNoteList.setLayoutManager(layoutManager);
-
-        // set adapter
-        NoteListAdapter adapter = new NoteListAdapter(notes, this);
-        mNoteList.setAdapter(adapter);
-    }
-
-    @Override
     public void startAddNoteActivity() {
         Intent intent = new Intent(this, AddNoteActivity.class);
         startActivity(intent);
     }
 
+
     @Override
-    public void showNotes() {
-
-
+    public void showNotes(List<Note> notes) {
+        NoteListAdapter adapter = (NoteListAdapter) mNoteList.getAdapter();
+        adapter.updateNotesList(notes);
     }
 
     /* button listener implementation */
