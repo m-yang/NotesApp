@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public class NoteListActivity extends AppCompatActivity implements NoteListView, NoteListAdapter.ButtonActionListener {
 
-
     private String TAG = NoteListActivity.class.getSimpleName();
 
     @BindView(R.id.noteslist_rv)
@@ -51,8 +50,8 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
     }
 
-    private View.OnClickListener addNote() {
-
+    @Override
+    public View.OnClickListener addNote() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +87,7 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
     @Override
     public void showNotes() {
+
 
     }
 
