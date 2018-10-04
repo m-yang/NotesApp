@@ -7,25 +7,25 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_margin="12dp"
+        android:layout_margin="@dimen/card_margin"
         android:layout_width="@dimen/card_width"
         android:layout_height="@dimen/card_height"
         app:cardBackgroundColor="@color/colorPrimary"
-        card_view:cardCornerRadius="6dp">
+        card_view:cardCornerRadius="@dimen/card_radius">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:textColor="#FFFFFF"
+                android:textColor="@color/card_text_color"
                 android:id="@+id/tv_name_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="@+id/layout_buttons"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="48dp"
+                android:layout_marginStart="@dimen/card_text_margin_start"
+                android:layout_marginEnd="@dimen/card_text_margin_end"
+                android:layout_marginBottom="@dimen/card_text_margin_bottom"
                 card_view:layout_constraintBottom_toTopOf="@+id/layout_buttons"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintHorizontal_bias="0.121"
@@ -36,7 +36,7 @@
                 android:id="@+id/layout_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="@color/card_button_bg_color"
                 android:paddingTop="@dimen/card_btn_padding_top"
                 android:paddingBottom="@dimen/card_btn_padding_bottom"
                 card_view:layout_constraintBottom_toBottomOf="parent"
