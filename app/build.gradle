@@ -17,6 +17,10 @@ android {
         }
     }
 
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+
     flavorDimensions "main_app"
 
     productFlavors {
