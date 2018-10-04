@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.android.notesapp.R;
 import com.example.android.notesapp.model.DummyNoteData;
@@ -61,6 +62,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     @Override
     public void onBindViewHolder(@NonNull NoteListAdapter.NoteViewHolder holder, int position) {
         Note note = mNotes.get(position);
+
+        holder.nameTv.setText(note.getName());
     }
 
     @Override
@@ -70,6 +73,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
+        TextView nameTv;
         ImageButton deleteBtn;
         ImageButton editBtn;
         ImageButton shareBtn;
@@ -77,6 +81,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         public NoteViewHolder(View v) {
             super(v);
 
+            nameTv = v.findViewById(R.id.tv_name_name);
             deleteBtn = v.findViewById(R.id.btn_delete);
             editBtn = v.findViewById(R.id.btn_edit);
             shareBtn = v.findViewById(R.id.btn_share);
