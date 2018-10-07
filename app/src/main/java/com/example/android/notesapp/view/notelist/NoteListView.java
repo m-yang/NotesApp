@@ -1,14 +1,12 @@
-package com.example.android.notesapp.view;
+package com.example.android.notesapp.view.notelist;
 
 import android.view.View;
 
 import com.example.android.notesapp.model.Note;
 
-import java.util.List;
-
 public interface NoteListView {
 
     void startAddNoteActivity();
     View.OnClickListener addNote();
-
+    void startEditNoteActivity(Note note);
 }

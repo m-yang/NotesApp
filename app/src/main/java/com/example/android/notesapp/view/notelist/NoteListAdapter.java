@@ -1,25 +1,19 @@
-package com.example.android.notesapp.view;
+package com.example.android.notesapp.view.notelist;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.notesapp.R;
-import com.example.android.notesapp.model.DummyNoteData;
 import com.example.android.notesapp.model.Note;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import butterknife.OnClick;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteViewHolder> {
 
@@ -33,6 +27,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         this.mNotes.remove(position);
         notifyDataSetChanged();
     }
+
+    public Note getNoteData(int position) {
+        return mNotes.get(position);
+    }
+
 
     public interface ButtonActionListener {
         void onDelete(int position);

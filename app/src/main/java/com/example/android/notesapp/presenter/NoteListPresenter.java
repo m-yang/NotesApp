@@ -2,8 +2,8 @@ package com.example.android.notesapp.presenter;
 
 import com.example.android.notesapp.model.DummyNoteData;
 import com.example.android.notesapp.model.Note;
-import com.example.android.notesapp.view.NoteListAdapter;
-import com.example.android.notesapp.view.NoteListView;
+import com.example.android.notesapp.view.notelist.NoteListAdapter;
+import com.example.android.notesapp.view.notelist.NoteListView;
 
 import java.util.List;
 
@@ -39,11 +39,12 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     }
 
 
-    public void editNote() {
-        //TODO
+    public void editNote(int position) {
+        Note note = mAdapter.getNoteData(position);
+        mView.startEditNoteActivity(note);
     }
 
-    public void shareNote() {
+    public void shareNote(int position) {
         // TODO
     }
 }

@@ -1,4 +1,4 @@
-package com.example.android.notesapp.view;
+package com.example.android.notesapp.view.notelist;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,7 @@ import android.view.View;
 import com.example.android.notesapp.R;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.presenter.NoteListPresenter;
-
-import java.util.List;
+import com.example.android.notesapp.view.addnote.AddNoteActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +20,7 @@ import butterknife.ButterKnife;
 public class NoteListActivity extends AppCompatActivity implements NoteListView, NoteListAdapter.ButtonActionListener {
 
     private String TAG = NoteListActivity.class.getSimpleName();
+    public static String NOTE_ID = "NOTE_ID";
 
     @BindView(R.id.noteslist_rv)
     public RecyclerView mNoteList;
@@ -58,6 +58,12 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.loadNotes();
+    }
+
+    @Override
     public View.OnClickListener addNote() {
         return new View.OnClickListener() {
             @Override
@@ -81,6 +87,14 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         startActivity(intent);
     }
 
+    @Override
+    public void startEditNoteActivity(Note note) {
+        Intent intent = new Intent(this, AddNoteActivity.class);
+
+        intent.putExtra(NOTE_ID, note);
+        startActivity(intent);
+
+    }
 
     /* button listener implementation */
     @Override
@@ -92,12 +106,12 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     @Override
     public void onEdit(int position) {
         Log.d(TAG, "edit called: " + position);
-        mPresenter.editNote();
+        mPresenter.editNote(position);
     }
 
     @Override
     public void onShare(int position) {
         Log.d(TAG, "share called: " + position);
-        mPresenter.shareNote();
+        mPresenter.shareNote(position);
     }
 }

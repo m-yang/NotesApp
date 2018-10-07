@@ -12,7 +12,7 @@ public class DummyNoteData {
         for(int i = 0; i < 10; i++) {
             String name = "Lorem ipsum";
             String note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-            int minutesLeft = 10;
+            int minutesLeft = i * 7;
 
             notes.add(new Note(name, note, minutesLeft));
         }

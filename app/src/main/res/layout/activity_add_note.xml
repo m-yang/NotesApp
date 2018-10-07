@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.notesapp.view.AddNoteActivity">
+    tools:context="com.example.android.notesapp.view.addnote.AddNoteActivity">
 
 
     <LinearLayout
@@ -56,12 +56,13 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatSeekBar
+        android:max="60"
         android:id="@+id/reminder_sb"
-        android:layout_width="360dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="@dimen/seekbar_width"
+        android:layout_height="@dimen/seekbar_height"
+        android:layout_marginStart="@dimen/seekbar_margin_start"
+        android:layout_marginTop="@dimen/seekbar_margin_top"
+        android:layout_marginEnd="@dimen/seekbar_margin_end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_layout" />
