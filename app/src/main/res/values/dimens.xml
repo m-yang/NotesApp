@@ -11,4 +11,8 @@
     <dimen name="card_text_margin_start">8dp</dimen>
     <dimen name="card_text_margin_end">8dp</dimen>
     <dimen name="card_text_margin_bottom">48dp</dimen>
+    <dimen name="edit_text_layout_width">340dp</dimen>
+    <dimen name="edit_text_margin_start">8dp</dimen>
+    <dimen name="edit_text_margin_top">44dp</dimen>
+    <dimen name="edit_text_margin_end">8dp</dimen>
 </resources>

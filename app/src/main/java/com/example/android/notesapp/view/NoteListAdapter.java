@@ -30,9 +30,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     private ButtonActionListener mButtonActionListener;
 
     public interface ButtonActionListener {
-        void onDelete();
-        void onEdit();
-        void onShare();
+        void onDelete(int position);
+        void onEdit(int position);
+        void onShare(int position);
     }
 
     public NoteListAdapter(ButtonActionListener context) {
@@ -95,7 +95,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         class DeleteClickListener implements View.OnClickListener {
             @Override
             public void onClick(View view) {
-                mButtonActionListener.onDelete();
+
+                mButtonActionListener.onDelete(getAdapterPosition());
             }
         }
 
@@ -103,14 +104,14 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
             @Override
             public void onClick(View view) {
-                mButtonActionListener.onEdit();
+                mButtonActionListener.onEdit(getAdapterPosition());
             }
         }
 
         class ShareClickListener implements View.OnClickListener {
             @Override
             public void onClick(View view) {
-                mButtonActionListener.onShare();
+                mButtonActionListener.onShare(getAdapterPosition());
             }
         }
 

@@ -90,17 +90,19 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
     /* button listener implementation */
     @Override
-    public void onDelete() {
-
+    public void onDelete(int position) {
+        Log.d(TAG, "delete called: " + position);
     }
 
     @Override
-    public void onEdit() {
-
+    public void onEdit(int position) {
+        Log.d(TAG, "edit called: " + position);
     }
 
     @Override
-    public void onShare() {
+    public void onShare(int position) {
+
+        Log.d(TAG, "share called: " + position);
 
     }
 }
