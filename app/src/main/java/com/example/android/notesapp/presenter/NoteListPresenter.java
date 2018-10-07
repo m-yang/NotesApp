@@ -2,6 +2,7 @@ package com.example.android.notesapp.presenter;
 
 import com.example.android.notesapp.model.DummyNoteData;
 import com.example.android.notesapp.model.Note;
+import com.example.android.notesapp.view.NoteListAdapter;
 import com.example.android.notesapp.view.NoteListView;
 
 import java.util.List;
@@ -10,6 +11,11 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     private NoteListView mView;
     private Note mModel;
+    private NoteListAdapter mAdapter;
+
+    public NoteListPresenter(NoteListAdapter adapter) {
+        this.mAdapter = adapter;
+    }
 
 
     @Override
@@ -24,12 +30,20 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     public void loadNotes() {
         List<Note> notes = DummyNoteData.getNotes();
-        mView.showNotes(notes);
+
+        mAdapter.updateNotesList(notes);
     }
 
-    public void deleteNote() {
-
+    public void deleteNote(int position) {
+        mAdapter.deleteNote(position);
     }
 
 
+    public void editNote() {
+        //TODO
+    }
+
+    public void shareNote() {
+        // TODO
+    }
 }

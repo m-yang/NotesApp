@@ -41,10 +41,6 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
         ButterKnife.bind(this);
 
-        // setup presenter
-        mPresenter = new NoteListPresenter();
-        mPresenter.attachView(this);
-
         mAddNoteFab.setOnClickListener(addNote());
 
         // setup recycler view
@@ -53,6 +49,10 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
         NoteListAdapter adapter = new NoteListAdapter(this);
         mNoteList.setAdapter(adapter);
+
+        // setup presenter
+        mPresenter = new NoteListPresenter(adapter);
+        mPresenter.attachView(this);
 
         mPresenter.loadNotes();
     }
@@ -82,27 +82,22 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     }
 
 
-    @Override
-    public void showNotes(List<Note> notes) {
-        NoteListAdapter adapter = (NoteListAdapter) mNoteList.getAdapter();
-        adapter.updateNotesList(notes);
-    }
-
     /* button listener implementation */
     @Override
     public void onDelete(int position) {
         Log.d(TAG, "delete called: " + position);
+        mPresenter.deleteNote(position);
     }
 
     @Override
     public void onEdit(int position) {
         Log.d(TAG, "edit called: " + position);
+        mPresenter.editNote();
     }
 
     @Override
     public void onShare(int position) {
-
         Log.d(TAG, "share called: " + position);
-
+        mPresenter.shareNote();
     }
 }
