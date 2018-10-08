@@ -64,4 +64,8 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         mView.startShareIntent(shareIntent);
 
     }
+
+    public void addNote(Note note) {
+        mAdapter.addNote(note);
+    }
 }

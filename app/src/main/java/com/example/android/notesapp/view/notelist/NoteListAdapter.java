@@ -39,6 +39,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         notifyDataSetChanged();
     }
 
+    public void addNote(Note note) {
+        mNotes.add(0, note);
+        notifyDataSetChanged();
+    }
+
 
     public interface ButtonActionListener {
         void onDelete(int position);

@@ -39,7 +39,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
     @BindView(R.id.confirm_note_fab)
     public FloatingActionButton mConfirmNoteFab;
 
-    private int position;
+    private int position = -1;
 
     private AddNotePresenter mPresenter;
 

@@ -29,6 +29,7 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     public static String POSITION_UPDATE_ID = "POSITION_UPDATE_ID";
 
     public static int EDIT_NOTE_REQUEST_CODE = 1;
+    public static int ADD_NOTE_REQUEST_CODE = 2;
 
     @BindView(R.id.noteslist_rv)
     public RecyclerView mNoteList;
@@ -83,8 +84,14 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
                 Log.d(TAG, "position: " + position);
                 mPresenter.updateNote(note, position);
             }
-            if (resultCode == RESULT_CANCELED) {
-                // do nothing
+        }
+
+        if (requestCode == ADD_NOTE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Note note = data.getParcelableExtra(NOTE_UPDATE_ID);
+                Log.d(TAG, "remain: " + note.getMinutesLeft());
+
+                mPresenter.addNote(note);
             }
         }
     }
@@ -99,7 +106,8 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     @Override
     public void startAddNoteActivity() {
         Intent intent = new Intent(this, AddNoteActivity.class);
-        startActivity(intent);
+
+        startActivityForResult(intent, ADD_NOTE_REQUEST_CODE);
     }
 
     @Override
@@ -118,8 +126,9 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAddNoteActivity();
                 Log.d(TAG, "add button clicked");
+
+                startAddNoteActivity();
             }
         };
     }
