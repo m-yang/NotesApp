@@ -1,5 +1,6 @@
 package com.example.android.notesapp.presenter;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.android.notesapp.model.DummyNoteData;
@@ -52,6 +53,15 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     }
 
     public void shareNote(int position) {
-        // TODO
+
+        String note = mAdapter.getNoteData(position).getNote();
+
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, note);
+
+        mView.startShareIntent(shareIntent);
+
     }
 }

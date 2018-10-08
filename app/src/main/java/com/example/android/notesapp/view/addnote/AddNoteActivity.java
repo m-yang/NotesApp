@@ -63,7 +63,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
             position = bundle.getInt(POSITION_ID);
             mPresenter.loadNote(note);
         }
-
     }
 
     public View.OnClickListener confirmNote() {

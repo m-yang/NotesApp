@@ -21,11 +21,14 @@ import butterknife.ButterKnife;
 public class NoteListActivity extends AppCompatActivity implements NoteListView, NoteListAdapter.ButtonActionListener {
 
     private String TAG = NoteListActivity.class.getSimpleName();
+
     public static String NOTE_ID = "NOTE_ID";
     public static String POSITION_ID = "POSITION_ID";
-    public static int EDIT_NOTE_REQUEST_CODE = 1;
+
     public static String NOTE_UPDATE_ID = "NOTE_UPDATE_ID";
     public static String POSITION_UPDATE_ID = "POSITION_UPDATE_ID";
+
+    public static int EDIT_NOTE_REQUEST_CODE = 1;
 
     @BindView(R.id.noteslist_rv)
     public RecyclerView mNoteList;
@@ -119,6 +122,11 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
                 Log.d(TAG, "add button clicked");
             }
         };
+    }
+
+    @Override
+    public void startShareIntent(Intent intent) {
+        startActivity(intent);
     }
 
     /* button listener implementation */
