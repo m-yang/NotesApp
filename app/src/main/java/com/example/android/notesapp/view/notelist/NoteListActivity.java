@@ -1,5 +1,6 @@
 package com.example.android.notesapp.view.notelist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,10 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
 
     private String TAG = NoteListActivity.class.getSimpleName();
     public static String NOTE_ID = "NOTE_ID";
+    public static String POSITION_ID = "POSITION_ID";
+    public static int EDIT_NOTE_REQUEST_CODE = 1;
+    public static String NOTE_UPDATE_ID = "NOTE_UPDATE_ID";
+    public static String POSITION_UPDATE_ID = "POSITION_UPDATE_ID";
 
     @BindView(R.id.noteslist_rv)
     public RecyclerView mNoteList;
@@ -60,18 +65,25 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.loadNotes();
     }
 
     @Override
-    public View.OnClickListener addNote() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startAddNoteActivity();
-                Log.d(TAG, "add button clicked");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_NOTE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Note note = data.getParcelableExtra(NOTE_UPDATE_ID);
+                int position = data.getIntExtra(POSITION_UPDATE_ID, -1);
+
+                Log.d(TAG, "remain: " + note.getMinutesLeft());
+                Log.d(TAG, "position: " + position);
+                mPresenter.updateNote(note, position);
             }
-        };
+            if (resultCode == RESULT_CANCELED) {
+                // do nothing
+            }
+        }
     }
 
     @Override
@@ -88,12 +100,25 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     }
 
     @Override
-    public void startEditNoteActivity(Note note) {
+    public void startEditNoteActivity(Note note, int position) {
         Intent intent = new Intent(this, AddNoteActivity.class);
 
         intent.putExtra(NOTE_ID, note);
-        startActivity(intent);
+        intent.putExtra(POSITION_ID, position);
 
+        startActivityForResult(intent, EDIT_NOTE_REQUEST_CODE);
+
+    }
+
+    @Override
+    public View.OnClickListener addNote() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startAddNoteActivity();
+                Log.d(TAG, "add button clicked");
+            }
+        };
     }
 
     /* button listener implementation */

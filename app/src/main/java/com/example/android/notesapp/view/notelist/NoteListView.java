@@ -8,5 +8,5 @@ public interface NoteListView {
 
     void startAddNoteActivity();
     View.OnClickListener addNote();
-    void startEditNoteActivity(Note note);
+    void startEditNoteActivity(Note note, int position);
 }

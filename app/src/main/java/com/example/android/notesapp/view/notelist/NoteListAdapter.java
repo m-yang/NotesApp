@@ -3,6 +3,7 @@ package com.example.android.notesapp.view.notelist;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     public Note getNoteData(int position) {
         return mNotes.get(position);
+    }
+
+    public void updateNote(Note note, int position) {
+        Log.d(TAG, "remain: " + note.getMinutesLeft());
+        mNotes.set(position, note);
+        notifyDataSetChanged();
     }
 
 
