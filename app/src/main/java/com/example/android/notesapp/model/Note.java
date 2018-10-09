@@ -11,6 +11,10 @@ public class Note implements Parcelable {
 
     private int minutesLeft;
 
+    public Note(){
+        // empty constructor
+    }
+
     public Note(String name, String note, int minutesLeft) {
         this.name = name;
         this.note = note;
