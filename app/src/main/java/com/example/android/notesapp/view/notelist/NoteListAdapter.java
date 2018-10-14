@@ -20,7 +20,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     private static final String TAG = NoteListAdapter.class.getSimpleName();
 
-    private int mNumItems;
     private List<Note> mNotes;
     private ButtonActionListener mButtonActionListener;
 
@@ -54,7 +53,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     public NoteListAdapter(ButtonActionListener context) {
         this.mNotes = new ArrayList<>();
         this.mButtonActionListener = context;
-        this.mNumItems = mNotes.size();
     }
 
     public void updateNotesList(List<Note> notes) {

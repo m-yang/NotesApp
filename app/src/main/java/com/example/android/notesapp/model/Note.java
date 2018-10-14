@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 public class Note implements Parcelable {
 
+    private String id;
+
     private String name;
 
     private String note;
@@ -15,12 +17,17 @@ public class Note implements Parcelable {
         // empty constructor
     }
 
-    public Note(String name, String note, int minutesLeft) {
+    public Note(String id, String name, String note, int minutesLeft) {
+        this.id = id;
         this.name = name;
         this.note = note;
         this.minutesLeft = minutesLeft;
     }
 
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -46,6 +53,7 @@ public class Note implements Parcelable {
         this.minutesLeft = minutesLeft;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -53,12 +61,14 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeString(this.note);
         dest.writeInt(this.minutesLeft);
     }
 
     protected Note(Parcel in) {
+        this.id = in.readString();
         this.name = in.readString();
         this.note = in.readString();
         this.minutesLeft = in.readInt();
