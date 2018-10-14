@@ -9,7 +9,7 @@ public interface NoteListView {
 
     void startAddNoteActivity();
     View.OnClickListener addNote();
-    void startEditNoteActivity(Note note, int position);
+    void startEditNoteActivity(Note note);
 
     void startShareIntent(Intent intent);
 }

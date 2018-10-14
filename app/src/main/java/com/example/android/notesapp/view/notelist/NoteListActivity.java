@@ -20,16 +20,23 @@ import butterknife.ButterKnife;
 
 public class NoteListActivity extends AppCompatActivity implements NoteListView, NoteListAdapter.ButtonActionListener {
 
-    private String TAG = NoteListActivity.class.getSimpleName();
+    private String DEBUG = "NOTE_DEBUG";
 
     public static String NOTE_ID = "NOTE_ID";
-    public static String POSITION_ID = "POSITION_ID";
 
     public static String NOTE_UPDATE_ID = "NOTE_UPDATE_ID";
-    public static String POSITION_UPDATE_ID = "POSITION_UPDATE_ID";
 
     public static int EDIT_NOTE_REQUEST_CODE = 1;
     public static int ADD_NOTE_REQUEST_CODE = 2;
+
+    public static String EDIT_NOTE_ACTION = "EDIT_NOTE_ACTION";
+    public static String ADD_NOTE_ACTION = "ADD_NOTE_ACTION";
+
+    public static String ADD_NOTE_NAME = "ADD_NOTE_NAME";
+    public static String ADD_NOTE_CONTENT = "ADD_NOTE_CONTENT";
+    public static String ADD_NOTE_REMAIN = "ADD_NOTE_REMAIN";
+
+
 
     @BindView(R.id.noteslist_rv)
     public RecyclerView mNoteList;
@@ -63,7 +70,7 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         mPresenter = new NoteListPresenter(adapter);
         mPresenter.attachView(this);
 
-        mPresenter.loadNotes();
+        mPresenter.addDbListener();
     }
 
     @Override
@@ -74,25 +81,19 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == EDIT_NOTE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Note note = data.getParcelableExtra(NOTE_UPDATE_ID);
-                int position = data.getIntExtra(POSITION_UPDATE_ID, -1);
-
-                Log.d(TAG, "remain: " + note.getMinutesLeft());
-                Log.d(TAG, "position: " + position);
-                mPresenter.updateNote(note, position);
+                mPresenter.updateNote(note);
             }
         }
 
         if (requestCode == ADD_NOTE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Note note = data.getParcelableExtra(NOTE_UPDATE_ID);
-                Log.d(TAG, "remain: " + note.getMinutesLeft());
+            String name = data.getStringExtra(ADD_NOTE_NAME);
+            String content = data.getStringExtra(ADD_NOTE_CONTENT);
+            int remain = data.getIntExtra(ADD_NOTE_REMAIN, 0);
 
-                mPresenter.addNote(note);
-            }
+            mPresenter.addNote(name, content, remain);
         }
     }
 
@@ -107,15 +108,17 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     public void startAddNoteActivity() {
         Intent intent = new Intent(this, AddNoteActivity.class);
 
+        intent.setAction(ADD_NOTE_ACTION);
+
         startActivityForResult(intent, ADD_NOTE_REQUEST_CODE);
     }
 
     @Override
-    public void startEditNoteActivity(Note note, int position) {
+    public void startEditNoteActivity(Note note) {
         Intent intent = new Intent(this, AddNoteActivity.class);
 
         intent.putExtra(NOTE_ID, note);
-        intent.putExtra(POSITION_ID, position);
+        intent.setAction(EDIT_NOTE_ACTION);
 
         startActivityForResult(intent, EDIT_NOTE_REQUEST_CODE);
 
@@ -126,8 +129,6 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "add button clicked");
-
                 startAddNoteActivity();
             }
         };
@@ -141,19 +142,16 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     /* button listener implementation */
     @Override
     public void onDelete(int position) {
-        Log.d(TAG, "delete called: " + position);
         mPresenter.deleteNote(position);
     }
 
     @Override
     public void onEdit(int position) {
-        Log.d(TAG, "edit called: " + position);
         mPresenter.editNote(position);
     }
 
     @Override
     public void onShare(int position) {
-        Log.d(TAG, "share called: " + position);
         mPresenter.shareNote(position);
     }
 }

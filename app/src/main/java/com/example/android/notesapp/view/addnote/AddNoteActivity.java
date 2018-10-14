@@ -2,9 +2,9 @@ package com.example.android.notesapp.view.addnote;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +17,13 @@ import com.example.android.notesapp.presenter.AddNotePresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.android.notesapp.view.notelist.NoteListActivity.ADD_NOTE_ACTION;
+import static com.example.android.notesapp.view.notelist.NoteListActivity.ADD_NOTE_CONTENT;
+import static com.example.android.notesapp.view.notelist.NoteListActivity.ADD_NOTE_NAME;
+import static com.example.android.notesapp.view.notelist.NoteListActivity.ADD_NOTE_REMAIN;
+import static com.example.android.notesapp.view.notelist.NoteListActivity.EDIT_NOTE_ACTION;
 import static com.example.android.notesapp.view.notelist.NoteListActivity.NOTE_ID;
 import static com.example.android.notesapp.view.notelist.NoteListActivity.NOTE_UPDATE_ID;
-import static com.example.android.notesapp.view.notelist.NoteListActivity.POSITION_ID;
-import static com.example.android.notesapp.view.notelist.NoteListActivity.POSITION_UPDATE_ID;
 
 public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
 
@@ -38,8 +41,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
 
     @BindView(R.id.confirm_note_fab)
     public FloatingActionButton mConfirmNoteFab;
-
-    private int position = -1;
 
     private AddNotePresenter mPresenter;
 
@@ -60,7 +61,6 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Note note = bundle.getParcelable(NOTE_ID);
-            position = bundle.getInt(POSITION_ID);
             mPresenter.loadNote(note);
         }
     }
@@ -69,22 +69,39 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "confirm button clicked");
-                updateNote();
+                if (getIntent().getAction().equals(EDIT_NOTE_ACTION)) {
+                    updateNote();
+                } else if(getIntent().getAction().equals(ADD_NOTE_ACTION)){
+                    addNote();
+                }
             }
         };
     }
 
-    public void updateNote() {
+
+    public void addNote() {
         String name = mNameEditText.getText().toString();
         String content = mNoteEditText.getText().toString();
         int remain = mReminderSeekbar.getProgress();
 
-        Note note = new Note(name, content, remain);
+        Intent intent = new Intent();
+        intent.putExtra(ADD_NOTE_NAME, name);
+        intent.putExtra(ADD_NOTE_CONTENT, content);
+        intent.putExtra(ADD_NOTE_REMAIN, remain);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    public void updateNote() {
+
+        String name = mNameEditText.getText().toString();
+        String content = mNoteEditText.getText().toString();
+        int remain = mReminderSeekbar.getProgress();
+
+        Note note = mPresenter.updateNote(name, content, remain);
 
         Intent intent = new Intent();
         intent.putExtra(NOTE_UPDATE_ID, note);
-        intent.putExtra(POSITION_UPDATE_ID, position);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

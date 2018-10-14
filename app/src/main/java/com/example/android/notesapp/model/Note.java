@@ -29,6 +29,11 @@ public class Note implements Parcelable {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id + " name: " + name + " note: "+ note + " minutesLeft: "+ minutesLeft;
+    }
+
     public String getName() {
         return name;
     }

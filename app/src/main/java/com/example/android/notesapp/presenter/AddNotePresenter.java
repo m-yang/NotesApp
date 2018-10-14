@@ -19,10 +19,21 @@ public class AddNotePresenter implements Presenter<AddNoteView>{
     }
 
     public void loadNote(Note note) {
+        this.note = note;
+
         String name = note.getName();
         String content = note.getNote();
         int remain = note.getMinutesLeft();
 
         mView.populateViews(name, content, remain);
     }
+
+    public Note updateNote(String name, String content, int remain) {
+        this.note.setName(name);
+        this.note.setNote(content);
+        this.note.setMinutesLeft(remain);
+
+        return this.note;
+    }
+
 }

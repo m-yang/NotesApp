@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.android.notesapp.model.DummyNoteData;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.view.notelist.NoteListAdapter;
 import com.example.android.notesapp.view.notelist.NoteListView;
@@ -29,6 +27,8 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     DatabaseReference mDb;
 
+    final List<Note> notes = new ArrayList<>();
+
     public NoteListPresenter(NoteListAdapter adapter) {
         this.mAdapter = adapter;
         this.mDb = FirebaseDatabase.getInstance().getReference(NOTES_REFERENCE);
@@ -45,16 +45,13 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         this.mView = null;
     }
 
-    public void loadNotes() {
-        final List<Note> notes = new ArrayList<>();
-
+    public void addDbListener() {
         mDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notes.clear();
                 for(DataSnapshot noteSnapshot : dataSnapshot.getChildren()) {
                     Note note = noteSnapshot.getValue(Note.class);
-
-                    Log.d(TAG, note.getName());
                     notes.add(note);
                 }
                 mAdapter.updateNotesList(notes);
@@ -62,24 +59,23 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG, "Error: " + databaseError.getMessage());
+                //not implemented
             }
         });
-
     }
 
     public void deleteNote(int position) {
-        mAdapter.deleteNote(position);
+        Note note = mAdapter.getNoteData(position);
+        mDb.child(note.getId()).removeValue();
     }
 
 
     public void editNote(int position) {
         Note note = mAdapter.getNoteData(position);
-        mView.startEditNoteActivity(note, position);
+        mView.startEditNoteActivity(note);
     }
 
     public void shareNote(int position) {
-
         String note = mAdapter.getNoteData(position).getNote();
 
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -88,29 +84,15 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, note);
 
         mView.startShareIntent(shareIntent);
-
     }
 
-    public void addNote(Note note) {
-        mAdapter.addNote(note);
-
+    public void addNote(String name, String content, int remain) {
         String id = mDb.push().getKey();
-
-        mDb.child(id).setValue(note, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    Log.d(TAG, "Error: " + databaseError.getMessage());
-                } else {
-                    Log.d(TAG, "Save success");
-                }
-            }
-        });
-
+        final Note note = new Note(id, name, content, remain);
+        mDb.child(id).setValue(note);
     }
 
-    public void updateNote(Note note, int position) {
-        mAdapter.updateNote(note, position);
-
+    public void updateNote(final Note note) {
+        mDb.child(note.getId()).setValue(note);
     }
 }

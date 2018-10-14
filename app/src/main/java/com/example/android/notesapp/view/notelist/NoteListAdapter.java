@@ -23,26 +23,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     private List<Note> mNotes;
     private ButtonActionListener mButtonActionListener;
 
-    public void deleteNote(int position) {
-        this.mNotes.remove(position);
-        notifyDataSetChanged();
-    }
 
     public Note getNoteData(int position) {
         return mNotes.get(position);
     }
-
-    public void updateNote(Note note, int position) {
-        Log.d(TAG, "remain: " + note.getMinutesLeft());
-        mNotes.set(position, note);
-        notifyDataSetChanged();
-    }
-
-    public void addNote(Note note) {
-        mNotes.add(0, note);
-        notifyDataSetChanged();
-    }
-
 
     public interface ButtonActionListener {
         void onDelete(int position);
