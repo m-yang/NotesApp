@@ -104,16 +104,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
         int window = remain;
 
-        Job job = dispatcher.newJobBuilder()
-                .setService(ReminderService.class)
-                .setTag(id)
-                .setRecurring(false)
-                .setTrigger(Trigger.executionWindow(window, window))
-                .build();
-
-        if(remain > 0) {
-            dispatcher.mustSchedule(job);
-        }
+        scheduleJob(window, id);
 
         mDb.child(id).setValue(note);
     }
@@ -123,6 +114,24 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
         if(note.getMinutesLeft() == 0) {
             dispatcher.cancel(note.getId());
+        } else {
+            int window = note.getMinutesLeft();
+            String id = note.getId();
+            scheduleJob(window, id);
         }
+    }
+
+    private void scheduleJob(int window, String id) {
+        Job job = dispatcher.newJobBuilder()
+                .setService(ReminderService.class)
+                .setTag(id)
+                .setRecurring(false)
+                .setTrigger(Trigger.executionWindow(window, window))
+                .build();
+
+        if(window > 0) {
+            dispatcher.mustSchedule(job);
+        }
+
     }
 }

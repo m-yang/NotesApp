@@ -1,5 +1,7 @@
 package com.example.android.notesapp.presenter;
 
+import android.util.Log;
+
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.view.addnote.AddNoteView;
 
@@ -38,9 +40,10 @@ public class AddNotePresenter implements Presenter<AddNoteView> {
 
     public boolean isNoteChanged(String name, String content, int remain) {
         if (note != null) {
-            return name.equals(note.getName())
+            boolean identical = name.equals(note.getName())
                     && content.equals(note.getNote())
                     && remain == note.getMinutesLeft();
+            return !identical;
         } else {
             return false;
         }
