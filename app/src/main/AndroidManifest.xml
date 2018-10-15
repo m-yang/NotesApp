@@ -17,6 +17,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.addnote.AddNoteActivity"></activity>
+
+        <service
+            android:exported="false"
+            android:name=".service.ReminderService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
     </application>
+
 
 </manifest>

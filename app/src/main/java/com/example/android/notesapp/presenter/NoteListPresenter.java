@@ -1,13 +1,19 @@
 package com.example.android.notesapp.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.android.notesapp.model.Note;
+import com.example.android.notesapp.service.ReminderService;
 import com.example.android.notesapp.view.notelist.NoteListAdapter;
 import com.example.android.notesapp.view.notelist.NoteListView;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +35,10 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     final List<Note> notes = new ArrayList<>();
 
+    FirebaseJobDispatcher dispatcher;
+
+    Context mContext;
+
     public NoteListPresenter(NoteListAdapter adapter) {
         this.mAdapter = adapter;
         this.mDb = FirebaseDatabase.getInstance().getReference(NOTES_REFERENCE);
@@ -38,6 +48,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     @Override
     public void attachView(NoteListView view) {
         this.mView = view;
+        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(mView.getContext()));
     }
 
     @Override
@@ -67,6 +78,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     public void deleteNote(int position) {
         Note note = mAdapter.getNoteData(position);
         mDb.child(note.getId()).removeValue();
+        dispatcher.cancel(note.getId());
     }
 
 
@@ -89,10 +101,28 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     public void addNote(String name, String content, int remain) {
         String id = mDb.push().getKey();
         final Note note = new Note(id, name, content, remain);
+
+        int window = remain;
+
+        Job job = dispatcher.newJobBuilder()
+                .setService(ReminderService.class)
+                .setTag(id)
+                .setRecurring(false)
+                .setTrigger(Trigger.executionWindow(window, window))
+                .build();
+
+        if(remain > 0) {
+            dispatcher.mustSchedule(job);
+        }
+
         mDb.child(id).setValue(note);
     }
 
     public void updateNote(final Note note) {
         mDb.child(note.getId()).setValue(note);
+
+        if(note.getMinutesLeft() == 0) {
+            dispatcher.cancel(note.getId());
+        }
     }
 }

@@ -71,7 +71,7 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
             public void onClick(View view) {
                 if (getIntent().getAction().equals(EDIT_NOTE_ACTION)) {
                     updateNote();
-                } else if(getIntent().getAction().equals(ADD_NOTE_ACTION)){
+                } else if (getIntent().getAction().equals(ADD_NOTE_ACTION)) {
                     addNote();
                 }
             }
@@ -93,17 +93,20 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
     }
 
     public void updateNote() {
-
         String name = mNameEditText.getText().toString();
         String content = mNoteEditText.getText().toString();
         int remain = mReminderSeekbar.getProgress();
-
-        Note note = mPresenter.updateNote(name, content, remain);
-
         Intent intent = new Intent();
-        intent.putExtra(NOTE_UPDATE_ID, note);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+
+        if (mPresenter.isNoteChanged(name, content, remain)) {
+            Note note = mPresenter.updateNote(name, content, remain);
+            intent.putExtra(NOTE_UPDATE_ID, note);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        } else {
+            setResult(Activity.RESULT_CANCELED, intent);
+            finish();
+        }
     }
 
     @Override

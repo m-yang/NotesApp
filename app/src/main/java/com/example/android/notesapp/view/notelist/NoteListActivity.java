@@ -1,13 +1,13 @@
 package com.example.android.notesapp.view.notelist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.example.android.notesapp.R;
@@ -101,6 +101,11 @@ public class NoteListActivity extends AppCompatActivity implements NoteListView,
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     /* view interface implementation */

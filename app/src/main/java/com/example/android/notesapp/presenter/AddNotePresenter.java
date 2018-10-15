@@ -3,7 +3,7 @@ package com.example.android.notesapp.presenter;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.view.addnote.AddNoteView;
 
-public class AddNotePresenter implements Presenter<AddNoteView>{
+public class AddNotePresenter implements Presenter<AddNoteView> {
 
     private AddNoteView mView;
     private Note note;
@@ -36,4 +36,13 @@ public class AddNotePresenter implements Presenter<AddNoteView>{
         return this.note;
     }
 
+    public boolean isNoteChanged(String name, String content, int remain) {
+        if (note != null) {
+            return name.equals(note.getName())
+                    && content.equals(note.getNote())
+                    && remain == note.getMinutesLeft();
+        } else {
+            return false;
+        }
+    }
 }
