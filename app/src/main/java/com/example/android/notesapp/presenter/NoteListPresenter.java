@@ -1,6 +1,7 @@
 package com.example.android.notesapp.presenter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     private static String TAG = NoteListPresenter.class.getSimpleName();
     private NoteListView mView;
     private NoteListAdapter mAdapter;
+    public static String NOTE_NAME_KEY = "NOTE_NAME_KEY";
 
     private static String NOTES_REFERENCE = "notes";
 
@@ -98,7 +100,8 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         String id = mDb.push().getKey();
         final Note note = new Note(id, name, content, remain);
 
-        scheduleJob(remain, id);
+
+        scheduleJob(remain, id, getBundleExtra(name));
 
         mDb.child(id).setValue(note);
     }
@@ -111,12 +114,21 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         } else {
             int window = note.getMinutesLeft();
             String id = note.getId();
-            scheduleJob(window, id);
+            scheduleJob(window, id, getBundleExtra(note.getName()));
         }
     }
 
-    private void scheduleJob(int window, String id) {
+    private Bundle getBundleExtra(String noteName) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(NOTE_NAME_KEY, noteName);
+
+        return bundle;
+    }
+
+    private void scheduleJob(int window, String id, Bundle bundle) {
         Job job = dispatcher.newJobBuilder()
+                .setExtras(bundle)
                 .setService(ReminderService.class)
                 .setTag(id)
                 .setRecurring(false)
