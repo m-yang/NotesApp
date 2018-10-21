@@ -1,10 +1,8 @@
 package com.example.android.notesapp.presenter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.widget.Toast;
 
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.service.ReminderService;
@@ -37,8 +35,6 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     FirebaseJobDispatcher dispatcher;
 
-    Context mContext;
-
     public NoteListPresenter(NoteListAdapter adapter) {
         this.mAdapter = adapter;
         this.mDb = FirebaseDatabase.getInstance().getReference(NOTES_REFERENCE);
@@ -61,7 +57,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notes.clear();
-                for(DataSnapshot noteSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot noteSnapshot : dataSnapshot.getChildren()) {
                     Note note = noteSnapshot.getValue(Note.class);
                     notes.add(note);
                 }
@@ -102,9 +98,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         String id = mDb.push().getKey();
         final Note note = new Note(id, name, content, remain);
 
-        int window = remain;
-
-        scheduleJob(window, id);
+        scheduleJob(remain, id);
 
         mDb.child(id).setValue(note);
     }
@@ -112,7 +106,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     public void updateNote(final Note note) {
         mDb.child(note.getId()).setValue(note);
 
-        if(note.getMinutesLeft() == 0) {
+        if (note.getMinutesLeft() == 0) {
             dispatcher.cancel(note.getId());
         } else {
             int window = note.getMinutesLeft();
@@ -129,9 +123,17 @@ public class NoteListPresenter implements Presenter<NoteListView> {
                 .setTrigger(Trigger.executionWindow(window, window))
                 .build();
 
-        if(window > 0) {
+        String message;
+        if (window > 0) {
+            message = "Will remind you in " + window + " minutes";
             dispatcher.mustSchedule(job);
+        } else {
+            message = "Will not remind you";
         }
+        toast(message);
+    }
 
+    private void toast(String message) {
+        Toast.makeText(mView.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
