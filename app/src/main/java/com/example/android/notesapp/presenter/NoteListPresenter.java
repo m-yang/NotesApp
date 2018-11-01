@@ -13,6 +13,7 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,13 +34,16 @@ public class NoteListPresenter implements Presenter<NoteListView> {
 
     DatabaseReference mDb;
 
+    String uid;
+
     final List<Note> notes = new ArrayList<>();
 
     FirebaseJobDispatcher dispatcher;
 
     public NoteListPresenter(NoteListAdapter adapter) {
         this.mAdapter = adapter;
-        this.mDb = FirebaseDatabase.getInstance().getReference(NOTES_REFERENCE);
+        uid = FirebaseAuth.getInstance().getUid();
+        this.mDb = FirebaseDatabase.getInstance().getReference(NOTES_REFERENCE).child(uid);
     }
 
 

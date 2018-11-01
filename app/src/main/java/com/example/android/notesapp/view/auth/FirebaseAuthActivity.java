@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class FirebaseAuthActivity extends AppCompatActivity {
 
-    private static final String TAG = "Introduction";
+    private static final String TAG = FirebaseAuthActivity.class.getSimpleName();
     private static final int SIGN_IN_RESULT = 100;
     private FirebaseAuth auth;
 
@@ -52,8 +52,8 @@ public class FirebaseAuthActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                FirebaseUser user = auth.getCurrentUser();
                 startActivity(new Intent(this, NoteListActivity.class));
+
             } else {
                 Log.v(TAG, "Error: " + response);
             }
