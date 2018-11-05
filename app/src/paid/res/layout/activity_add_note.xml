@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.notesapp.view.addnote.AddNoteActivity"
+    xsi:schemaLocation="http://schemas.android.com/tools ">
+
+
+    <LinearLayout
+        android:id="@+id/name_layout"
+        android:layout_width="@dimen/edit_text_layout_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edit_text_margin_start"
+        android:layout_marginTop="@dimen/edit_text_margin_top"
+        android:layout_marginEnd="@dimen/edit_text_margin_end"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_label" />
+
+        <EditText
+            android:id="@+id/name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/note_layout"
+        android:layout_width="@dimen/edit_text_layout_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/edit_text_margin_start"
+        android:layout_marginTop="@dimen/edit_text_margin_top"
+        android:layout_marginEnd="@dimen/edit_text_margin_end"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note_label" />
+
+        <EditText
+            android:id="@+id/note_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/reminder_sb"
+        android:layout_width="@dimen/seekbar_width"
+        android:layout_height="@dimen/seekbar_height"
+        android:layout_marginStart="@dimen/seekbar_margin_start"
+        android:layout_marginTop="@dimen/seekbar_margin_top"
+        android:layout_marginEnd="@dimen/seekbar_margin_end"
+        android:max="60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_layout" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/confirm_note_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_check_24dp" />
+
+</android.support.constraint.ConstraintLayout>
