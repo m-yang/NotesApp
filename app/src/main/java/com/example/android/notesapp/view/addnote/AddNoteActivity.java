@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.example.android.notesapp.R;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.presenter.AddNotePresenter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +49,8 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
@@ -62,6 +67,12 @@ public class AddNoteActivity extends AppCompatActivity implements AddNoteView {
             Note note = bundle.getParcelable(NOTE_ID);
             mPresenter.loadNote(note);
         }
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
     public View.OnClickListener confirmNote() {

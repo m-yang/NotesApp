@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
 import com.example.android.notesapp.R;
 import com.firebase.jobdispatcher.JobParameters;

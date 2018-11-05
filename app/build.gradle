@@ -63,6 +63,9 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    // ads
+    freeImplementation 'com.google.android.gms:play-services-ads:17.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
