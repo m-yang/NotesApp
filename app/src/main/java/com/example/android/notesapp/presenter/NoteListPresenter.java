@@ -1,10 +1,16 @@
 package com.example.android.notesapp.presenter;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.android.notesapp.NoteWidgetProvider;
+import com.example.android.notesapp.R;
 import com.example.android.notesapp.model.Note;
 import com.example.android.notesapp.service.ReminderService;
 import com.example.android.notesapp.view.notelist.NoteListAdapter;
@@ -21,7 +27,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class NoteListPresenter implements Presenter<NoteListView> {
 
@@ -29,6 +39,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     private NoteListView mView;
     private NoteListAdapter mAdapter;
     public static String NOTE_NAME_KEY = "NOTE_NAME_KEY";
+    public static String NOTES_PREF_KEY = "NOTES_PREF_KEY";
 
     private static String NOTES_REFERENCE = "notes";
 
@@ -39,6 +50,8 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     final List<Note> notes = new ArrayList<>();
 
     FirebaseJobDispatcher dispatcher;
+
+    static SharedPreferences sharedpreferences;
 
     public NoteListPresenter(NoteListAdapter adapter) {
         this.mAdapter = adapter;
@@ -51,6 +64,7 @@ public class NoteListPresenter implements Presenter<NoteListView> {
     public void attachView(NoteListView view) {
         this.mView = view;
         dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(mView.getContext()));
+        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(mView.getContext());
     }
 
     @Override
@@ -62,11 +76,23 @@ public class NoteListPresenter implements Presenter<NoteListView> {
         mDb.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                Set<String> noteSet = new HashSet<>();
                 notes.clear();
                 for (DataSnapshot noteSnapshot : dataSnapshot.getChildren()) {
                     Note note = noteSnapshot.getValue(Note.class);
                     notes.add(note);
+                    noteSet.add(note.getName());
                 }
+
+                editor.putStringSet(NOTES_PREF_KEY, noteSet);
+                editor.apply();
+
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mView.getContext());
+                int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                        new ComponentName(mView.getContext().getApplicationContext(), NoteWidgetProvider.class));
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_view);
+
                 mAdapter.updateNotesList(notes);
             }
 
